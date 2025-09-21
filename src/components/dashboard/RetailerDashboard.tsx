@@ -1,0 +1,137 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { GradientButton } from '@/components/ui/gradient-button';
+import { Button } from '@/components/ui/button';
+import { Package, Eye } from 'lucide-react';
+import { ProduceList } from '@/components/produce/ProduceList';
+import { useAuth } from '@/contexts/AuthContext';
+import { Produce } from '@/types/produce';
+
+type View = 'dashboard' | 'list';
+
+export const RetailerDashboard: React.FC = () => {
+  const [currentView, setCurrentView] = useState<View>('dashboard');
+  const [produces, setProduces] = useState<Produce[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    loadProduces();
+  }, []);
+
+  const loadProduces = () => {
+    const allProduces = JSON.parse(localStorage.getItem('agriTrace_produces') || '[]');
+    const userProduces = allProduces.filter((p: Produce) => p.currentOwner === user?.principal);
+    setProduces(userProduces);
+  };
+
+  if (currentView === 'list') {
+    return (
+      <div className="min-h-screen bg-background p-4">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">All Produce</h2>
+            <Button onClick={() => setCurrentView('dashboard')}>Back to Dashboard</Button>
+          </div>
+          <ProduceList produces={produces} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto p-6">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-foreground mb-2">Retailer Dashboard</h2>
+          <p className="text-muted-foreground">View and manage produce for retail sale</p>
+        </div>
+
+        <div className="grid md:grid-cols-1 max-w-md">
+          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer group" onClick={() => setCurrentView('list')}>
+            <CardHeader className="pb-4">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-3 group-hover:shadow-lg transition-all duration-300">
+                <Package className="h-6 w-6 text-white" />
+              </div>
+              <CardTitle>All Produce</CardTitle>
+              <CardDescription>View all produce available for retail sale</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <GradientButton variant="hero" className="w-full">
+                <Eye className="h-4 w-4 mr-2" />
+                View Produce ({produces.length})
+              </GradientButton>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Store Inventory */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Store Inventory</CardTitle>
+            <CardDescription>Produce available for sale to consumers</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {produces.length > 0 ? (
+              <div className="space-y-3">
+                {produces.map((produce) => (
+                  <div key={produce.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                    <div>
+                      <p className="font-medium">{produce.produceType}</p>
+                      <p className="text-sm text-muted-foreground">
+                        From: {produce.farmer} • Origin: {produce.origin}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Received: {new Date(produce.history[produce.history.length - 1]?.timestamp || 0).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-success">₹{produce.price}</p>
+                      <p className="text-sm text-muted-foreground">{produce.quality}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground py-8">
+                No produce in your store yet. Receive produce from distributors to get started!
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Sales Analytics */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Quick Stats</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-4 rounded-lg bg-success/10">
+                <p className="text-2xl font-bold text-success">{produces.length}</p>
+                <p className="text-sm text-muted-foreground">Products</p>
+              </div>
+              <div className="text-center p-4 rounded-lg bg-primary/10">
+                <p className="text-2xl font-bold text-primary">
+                  {produces.reduce((sum, p) => sum + p.price, 0)}
+                </p>
+                <p className="text-sm text-muted-foreground">Total Value</p>
+              </div>
+              <div className="text-center p-4 rounded-lg bg-accent/10">
+                <p className="text-2xl font-bold text-accent">
+                  {new Set(produces.map(p => p.produceType)).size}
+                </p>
+                <p className="text-sm text-muted-foreground">Variety</p>
+              </div>
+              <div className="text-center p-4 rounded-lg bg-warning/10">
+                <p className="text-2xl font-bold text-warning">
+                  {new Set(produces.map(p => p.origin)).size}
+                </p>
+                <p className="text-sm text-muted-foreground">Sources</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};

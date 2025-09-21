@@ -2,57 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* AgriTrace Design System - Agricultural theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Agricultural Green Palette */
+    --background: 120 20% 97%;
+    --foreground: 120 10% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 120 10% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 120 10% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Deep Forest Green */
+    --primary: 120 45% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 120 35% 35%;
+    --primary-dark: 120 55% 15%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Earth Brown */
+    --secondary: 30 25% 85%;
+    --secondary-foreground: 30 40% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent - Fresh Green */
+    --accent: 110 50% 55%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 110 40% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Muted Earth Tones */
+    --muted: 40 20% 92%;
+    --muted-foreground: 120 8% 45%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success - Vibrant Green */
+    --success: 120 60% 50%;
+    --success-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Warning - Golden Yellow */
+    --warning: 45 90% 60%;
+    --warning-foreground: 45 100% 10%;
 
-    --radius: 0.5rem;
+    /* Destructive - Earth Red */
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 98%;
 
-    --sidebar-background: 0 0% 98%;
+    /* Borders and Inputs */
+    --border: 120 15% 88%;
+    --input: 120 15% 90%;
+    --ring: 120 45% 25%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --radius: 0.75rem;
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(120 45% 25%), hsl(120 35% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(110 50% 55%), hsl(110 40% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(120 45% 25%), hsl(110 50% 55%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(120 20% 97%));
 
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(120 45% 25% / 0.1);
+    --shadow-strong: 0 8px 30px hsl(120 45% 25% / 0.15);
+    --shadow-glow: 0 0 20px hsl(110 50% 55% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Sidebar */
+    --sidebar-background: 120 20% 97%;
+    --sidebar-foreground: 120 10% 15%;
+    --sidebar-primary: 120 45% 25%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 120 15% 90%;
+    --sidebar-accent-foreground: 120 10% 15%;
+    --sidebar-border: 120 15% 88%;
+    --sidebar-ring: 120 45% 25%;
   }
 
   .dark {
